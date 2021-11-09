@@ -1,6 +1,7 @@
 package telran.util;
 
 import java.util.Arrays;
+
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.function.Predicate;
@@ -43,7 +44,11 @@ public class LinkedList<T> implements List<T> {
 			//removes element that has been returned by the last next call
 			//that is previous of the current. But if current is null, then tail
 			//should be removed
-			
+			if(current==null) {
+				removeNode(tail);
+			} else  {
+				removeNode(current.prev);
+			}
 		}
 		
 	}
@@ -186,7 +191,16 @@ public class LinkedList<T> implements List<T> {
 		//O[N]
 		//TODO write removeIf implementation based on iterator 
 		//To apply items a., b., c. in the slide #18 with iterator.remove()
-		return false;
+		
+		int prevSize = size;
+		Iterator<T> itr = iterator();
+		while(itr.hasNext()) {
+			if(predicate.test(itr.next())) {
+				itr.remove();
+			}
+		}
+		return prevSize > size;
+		// Done
 	}
 
 	private T removeNode(Node<T> current) {
